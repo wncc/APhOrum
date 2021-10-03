@@ -8,18 +8,20 @@ class App extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: []
+      message: ""
     };
   }
 
   componentDidMount() {
-    fetch("http://localhost:8080/helloworld")
-      .then(res => res.json())
+    fetch("http://localhost:8080/hello", {
+        crossDomain: true,
+        method: 'GET'
+      }).then(res => res.text())
       .then(
         (result) => {
           this.setState({
             isLoaded: true,
-            items: result.items
+            message: result
           });
         },
         // Note: it's important to handle errors here
@@ -35,20 +37,14 @@ class App extends Component {
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
+    const { error, isLoaded, message } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
       return <div>Loading...</div>;
     } else {
       return (
-        <ul>
-        {items.map(item => (
-          <li key={item.id}>
-          {item.name} {item.price}
-          </li>
-        ))}
-        </ul>
+        message
       );
     }
   }

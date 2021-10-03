@@ -17,6 +17,9 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
     fmt.Fprintf(w, "Hello World!")
 }
 
