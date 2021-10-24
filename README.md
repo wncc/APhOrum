@@ -4,6 +4,7 @@
 
 ### Backend
 `apt-get install golang`
+`cd backend && go get .`
 ### Frontend
 `apt-get install nodejs npm`<br>
 `cd frontend && npm install`
