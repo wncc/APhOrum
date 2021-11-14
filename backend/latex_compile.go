@@ -2,26 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rwestlund/gotex"
 )
-
-func check_error(e error, p bool) {
-	if e != nil {
-		if p {
-			panic(e)
-		} else {
-			log.Println("Error has occured: ", e)
-		}
-	}
-}
-
-type content struct {
-	Content string `json:"content" binding:"required"`
-}
 
 func latex_to_pdf(ctx *gin.Context) {
 	var params content
