@@ -2,18 +2,18 @@ package main
 
 import (
 	"fmt"
-    "gopkg.in/mgo.v2"
-    "gopkg.in/mgo.v2/bson"
-    "net/http"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Poll struct {
-
-	Title string
-	Author string
+	Title   string
+	Author  string
 	Options [4]string
-	ID string
+	ID      string
 }
 
 func CreatePoll(poll *Poll) bool {
@@ -30,7 +30,7 @@ func CreatePoll(poll *Poll) bool {
 	err = c.Find(bson.M{"id": poll.ID}).One(&result)
 
 	if result.ID != "" {
-	    // already present
+		// already present
 		return true
 	}
 
@@ -65,18 +65,18 @@ func GetPollHandler(ctx *gin.Context) {
 	var polls = FindPolls()
 
 	ctx.Header("Content-Type", "application/json")
-    ctx.JSON(http.StatusOK, polls)
+	ctx.JSON(http.StatusOK, polls)
 }
 
 func CreatePollHandler(ctx *gin.Context) {
 
-    var poll *Poll
+	var poll *Poll
 
-    if err := ctx.BindJSON(&poll); err != nil {
-        return
-    }
+	if err := ctx.BindJSON(&poll); err != nil {
+		return
+	}
 
-    CreatePoll(poll)
+	CreatePoll(poll)
 
-    ctx.IndentedJSON(http.StatusCreated, poll)
+	ctx.IndentedJSON(http.StatusCreated, poll)
 }
