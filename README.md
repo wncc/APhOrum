@@ -15,7 +15,7 @@ The latex engine assumes `xelatex` binary is available in your `$PATH`
 ## Running locally
 
 ### Backend
-`cd backend && go run *.go`
+`cd backend && go run main.go`
 ### Frontend
 To compile JSX with watch in `frontend/src`, run 
 `cd frontend && npx babel --watch src --out-dir static --presets react-app/prod`
