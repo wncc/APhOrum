@@ -27,3 +27,8 @@ These are practices followed currently:
 ### Frontend
 - Add dom container in index.html
 - Add component in main.js
+
+
+## Custom Notes
+### cheeku
+Use `"/c/Program Files/MongoDB/Server/5.0/bin/mongod.exe" --dbpath ~/Documents/MongoData` to start local mongo

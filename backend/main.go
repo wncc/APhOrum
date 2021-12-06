@@ -9,6 +9,8 @@ import (
 func main() {
 	router := gin.Default()
 
+	auth.CreateStore()
+
 	router.GET("/auth/verify", auth.VerifyToken)
 	// router.POST("/auth/login", XYZ)
 	// router.GET("/auth/logout", XYZ)
