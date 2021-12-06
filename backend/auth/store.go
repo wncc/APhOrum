@@ -2,8 +2,11 @@ package auth
 
 import (
 	"encoding/csv"
+	"fmt"
 	"log"
 	"os"
+
+	"gopkg.in/mgo.v2"
 )
 
 type userAuthData struct {
@@ -23,7 +26,7 @@ func check_error(e error, p bool) {
 	}
 }
 
-func createStore() map[string]userAuthData {
+func CreateStore() {
 	f, err := os.Open("users.csv")
 	check_error(err, true)
 
@@ -31,9 +34,19 @@ func createStore() map[string]userAuthData {
 	records, err := csvReader.ReadAll()
 	check_error(err, true)
 
-	var storage = make(map[string]userAuthData)
-	for _, entry := range records[1:] {
-		storage[entry[0]] = userAuthData{Username: entry[0], Password: entry[1], Token: "", Active: false}
+	session, err := mgo.Dial("127.0.0.1:27017/")
+	if err != nil {
+		fmt.Println(err)
 	}
-	return storage
+
+	c := session.DB("APhOrum").C("users")
+
+	for _, entry := range records[1:] {
+		err = c.Insert(userAuthData{Username: entry[0], Password: entry[1], Token: "", Active: false})
+		if err != nil {
+			// throw new RuntimeException()
+		}
+	}
+
+	session.Close()
 }
