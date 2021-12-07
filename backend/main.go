@@ -9,7 +9,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	CreateStore()
+	auth.CreateStore()
 
 	router.GET("/auth/verify", auth.VerifyToken)
 	// router.POST("/auth/login", XYZ)
