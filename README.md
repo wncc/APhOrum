@@ -16,6 +16,9 @@ The latex engine assumes `xelatex` binary is available in your `$PATH`
 
 ### Backend
 `cd backend && go run main.go`
+
+You may also want to open the swagger page for ease of navigating APIs, just paste swagger.yaml into [Swagger Editor](https://editor.swagger.io)
+
 ### Frontend
 To compile JSX with watch in `frontend/src`, run 
 `cd frontend && npx babel --watch src --out-dir static --presets react-app/prod`

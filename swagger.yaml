@@ -1,0 +1,230 @@
+swagger: "2.0"
+info:
+  description: "APhOrum"
+  version: "1.0.0"
+  title: "Swagger APhOrum"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "cheekujodhpur@gmail.com"
+host: "localhost:8080"
+tags:
+- name: "auth"
+  description: "Everything about auth"
+- name: "bulletin"
+  description: "Bulletin Board"
+- name: "paper"
+  description: "Question paper related Info"
+schemes:
+- "http"
+paths:
+  /paper/init:
+    get:
+      tags:
+      - "paper"
+      summary: "Init question paper schema"
+      description: ""
+      operationId: "initPaperSchema"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /paper/summaryInfo:
+    get:
+      tags:
+      - "paper"
+      summary: "Get number of questions"
+      description: ""
+      operationId: "getSummaryInfo"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /paper/translate/{id}:
+    get:
+      tags:
+      - "paper"
+      summary: "Get english text and translated text"
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id of question to return"
+        required: true
+        type: "integer"
+        format: "int8"
+      operationId: "getTranslation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /paper/translate:
+    post:
+      tags:
+      - "paper"
+      summary: "Post english text and translated text"
+      description: ""
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Message"
+        required: true
+        schema:
+          $ref: "#/definitions/TranslatedQuestion"
+      operationId: "postTranslation"
+      consumes:
+      - "application/json; charset=utf-8"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /paper/translate/download:
+    get:
+      tags:
+      - "paper"
+      summary: "Download pdf"
+      description: ""
+      operationId: "downloadTranslatedPdf"
+      consumes:
+      - "application/json; charset=utf-8"
+      produces:
+      - "application/pdf"
+      responses:
+        "405":
+          description: "Invalid input"
+  /bulletin:
+    get:
+      tags:
+      - "bulletin"
+      summary: "Get what is on bulletin board"
+      description: ""
+      operationId: "getBulletin"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+    post:
+      tags:
+      - "bulletin"
+      summary: "Post a bulletin board message"
+      description: ""
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Message"
+        required: true
+        schema:
+          $ref: "#/definitions/Message"
+      operationId: "postBulletin"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /auth/init:
+    get:
+      tags:
+      - "auth"
+      summary: "Initialise by creating auth store from csv"
+      description: ""
+      operationId: "createStore"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /auth/verify:
+    get:
+      tags:
+      - "auth"
+      summary: "Verify if token is valid"
+      description: ""
+      operationId: "verifyToken"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /auth/login:
+    post:
+      tags:
+      - "auth"
+      summary: "Login using creds"
+      description: ""
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Username and pass"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Access denied"
+  /auth/logout:
+    get:
+      tags:
+      - "auth"
+      summary: "Logout"
+      description: ""
+      responses:
+        "405":
+          description: "Invalid input"
+definitions:
+  User:
+    type: "object"
+    required:
+    - "username"
+    - "password"
+    properties:
+      username:
+        type: "string"
+        example: "doggie"
+      password:
+        type: "string"
+        format: "password"
+        example: "abcdefg"
+  Message:
+    type: "object"
+    required:
+    - "message"
+    - "expiry"
+    properties:
+      message:
+        type: "string"
+        example: "This is an example message"
+      expiry:
+        type: "integer"
+        example: 1639217672
+  TranslatedQuestion:
+    type: "object"
+    required:
+    - "id"
+    - "translatedText"
+    properties:
+      id:
+        type: "integer"
+        example: 0
+      translatedText:
+        type: "string"
+        example: "J'ne sais pas"
