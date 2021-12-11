@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type UserAuthData struct {
+type userAuthData struct {
 	Username string
 	Password string
 	Token    string
@@ -28,7 +28,7 @@ func CreateStore(c *gin.Context) {
 
 	var authData []interface{}
 	for _, entry := range records[1:] {
-		authData = append(authData, UserAuthData{Username: entry[0], Password: entry[1]})
+		authData = append(authData, userAuthData{Username: entry[0], Password: entry[1]})
 	}
 
 	// Write to Mongo

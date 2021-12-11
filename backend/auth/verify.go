@@ -14,7 +14,7 @@ import (
 )
 
 func Login(c *gin.Context) {
-	var authData UserAuthData
+	var authData userAuthData
 	err := c.BindJSON(&authData)
 	utils.CheckError(err, true)
 
@@ -51,7 +51,7 @@ func Logout(c *gin.Context) {
 func VerifyToken(c *gin.Context) {
 	token, _ := c.Cookie("token")
 
-	authData := UserAuthData{Token: token}
+	authData := userAuthData{Token: token}
 
 	// Get data from Mongo
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
