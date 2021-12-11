@@ -1,36 +1,73 @@
 package auth
 
 import (
+	"backend/utils"
+	"context"
+	"crypto/md5"
+	"fmt"
+	"time"
+
 	"github.com/gin-gonic/gin"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func VerifyToken(c *gin.Context) {
-	user, err := c.Cookie("user")
-	check_error(err, false)
+func Login(c *gin.Context) {
+	var authData UserAuthData
+	err := c.BindJSON(&authData)
+	utils.CheckError(err, true)
 
-	token, err := c.Cookie("token")
-	check_error(err, false)
+	// Get data from Mongo
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
+	utils.CheckError(err, true)
 
-	if fetchToken(user) == token {
+	ctx := context.Background()
+	err = client.Connect(ctx)
+	utils.CheckError(err, true)
+	defer client.Disconnect(ctx)
+
+	usersCollection := client.Database("APhOrum").Collection("users")
+	authData.Password = fmt.Sprintf("%x", md5.Sum([]byte(authData.Password)))
+
+	filter := bson.M{"username": authData.Username, "password": authData.Password}
+	count, _ := usersCollection.CountDocuments(ctx, filter)
+	if count == 1 {
+		token := fmt.Sprintf("%x", md5.Sum([]byte(time.Now().String()+authData.Username+authData.Password)))
+		c.SetCookie("token", token, 60*60, "/", "", false, true)
+		_, err = usersCollection.UpdateOne(ctx, filter, bson.M{"$set": bson.M{"token": token}})
+		utils.CheckError(err, true)
 		c.JSON(200, "OK")
 	} else {
-		c.JSON(403, "Access denied")
+		c.JSON(401, "Access Denied")
 	}
 }
 
-func fetchToken(user string) (token string) {
-	var session *mgo.Session
-	var err error
-	session, err = mgo.Dial("127.0.0.1:27017/")
-	check_error(err, false)
+func Logout(c *gin.Context) {
+	c.SetCookie("token", "", -1, "/", "", false, true)
+	c.JSON(200, "OK")
+}
 
-	c := session.DB("APhOrum").C("users")
+func VerifyToken(c *gin.Context) {
+	token, _ := c.Cookie("token")
 
-	err = c.Find(bson.M{"user": user}).Select(bson.M{"token": 1}).One(&token)
-	check_error(err, false)
-	session.Close()
+	authData := UserAuthData{Token: token}
 
-	return token
+	// Get data from Mongo
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
+	utils.CheckError(err, true)
+
+	ctx := context.Background()
+	err = client.Connect(ctx)
+	utils.CheckError(err, true)
+	defer client.Disconnect(ctx)
+
+	usersCollection := client.Database("APhOrum").Collection("users")
+
+	count, _ := usersCollection.CountDocuments(ctx, bson.M{"token": authData.Token})
+	if count == 1 {
+		c.JSON(200, "OK")
+	} else {
+		c.JSON(401, "Access Denied")
+	}
 }

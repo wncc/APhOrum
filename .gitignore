@@ -23,6 +23,7 @@
 
 ## General ##
 *.log
+init_data*
 frontend/static/inp1.pdf
 frontend/static/img1.jpg
 frontend/static/img1_anno.json
