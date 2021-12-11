@@ -3,6 +3,7 @@ package main
 import (
 	"backend/auth"
 	"backend/bulletin"
+	"backend/paper"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,6 +37,13 @@ func main() {
 	// Bulletin
 	router.GET("/bulletin", bulletin.GetBulletin)
 	router.POST("/bulletin", bulletin.PostBulletin)
+
+	// Paper
+	router.GET("/paper/init", paper.CreateStore)
+	router.GET("/paper/summaryInfo", paper.GetSummaryInfo)
+	router.GET("/paper/translate/:id", paper.GetTranslation)
+	router.POST("/paper/translate", paper.PostTranslation)
+	router.GET("/paper/translate/download", paper.DownloadTranslation)
 
 	router.Run(":8080")
 }
