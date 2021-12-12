@@ -1,10 +1,15 @@
 'use strict';
 
-import { Translator } from './translation.js';
-import { ImageAnnotator } from './annotator.js';
+import { Navigator } from './nav.js';
 
-let translatorContainer = document.querySelector('#aph_translation');
-ReactDOM.render(<Translator />, translatorContainer);
+let navContainer = document.querySelector("#aphoNavContainer")
+ReactDOM.render(<Navigator />, navContainer);
 
-let annotatorContainer = document.querySelector('#aph_image_annotate');
-ReactDOM.render(<ImageAnnotator />, annotatorContainer);
+// import { Translator } from './translation.js';
+// import { ImageAnnotator } from './annotator.js';
+// 
+// let translatorContainer = document.querySelector('#aph_translation');
+// ReactDOM.render(<Translator />, translatorContainer);
+// 
+// let annotatorContainer = document.querySelector('#aph_image_annotate');
+// ReactDOM.render(<ImageAnnotator />, annotatorContainer);
