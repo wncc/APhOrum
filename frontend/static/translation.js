@@ -59,7 +59,7 @@ var Translator = function (_React$Component) {
                         } }),
                     React.createElement(
                         'button',
-                        { type: 'submit' },
+                        { 'class': 'btn btn-primary', type: 'submit' },
                         'Go'
                     )
                 ),

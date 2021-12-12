@@ -35,6 +35,9 @@ func main() {
 	client, ctx := db.InitMongo()
 	defer client.Disconnect(ctx)
 
+	// Front End
+	router.Static("/ui", "../frontend/static")
+
 	// Auth
 	router.GET("/auth/init", auth.CreateStore)
 	router.GET("/auth/verify", auth.VerifyToken)

@@ -29,7 +29,7 @@ class Translator extends React.Component {
         <div>
             <form onSubmit={(e) => this.onSubmit(e)}>
                 <input type="text" ref={content => (this.inputContent = content)} />
-                <button type="submit">Go</button>
+                <button class="btn btn-primary" type="submit">Go</button>
             </form>
             <iframe src={this.state.output_file_path} />
         </div>
