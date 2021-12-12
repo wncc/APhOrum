@@ -32,6 +32,8 @@ func main() {
 	router.GET("/auth/init", auth.CreateStore)
 	router.GET("/auth/verify", auth.VerifyToken)
 	router.POST("/auth/login", auth.Login)
+	router.GET("/auth/resetPassword", auth.ResetPassword)
+	router.POST("/auth/changePassword", auth.ChangePassword)
 	router.GET("/auth/logout", auth.Logout)
 
 	// Bulletin

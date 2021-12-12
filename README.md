@@ -34,4 +34,5 @@ These are practices followed currently:
 
 ## Custom Notes
 ### cheeku
-Use `"/c/Program Files/MongoDB/Server/5.0/bin/mongod.exe" --dbpath ~/Documents/MongoData` to start local mongo
+- Use `"/c/Program Files/MongoDB/Server/5.0/bin/mongod.exe" --dbpath ~/Documents/MongoData` to start local mongo
+- Use `go build main.go && ./main.exe`
