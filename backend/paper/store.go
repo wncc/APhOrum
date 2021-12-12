@@ -45,7 +45,7 @@ func CreateStore(c *gin.Context) {
 		b, err = ioutil.ReadFile(fmt.Sprintf("../init_data/%s.texstub", n[1]))
 		utils.CheckError(err, true)
 		qs = string(b)
-		p.Questions = append(p.Questions, question{Id: int8(i), MatchString: n[0], EnglishText: qs, TranslatedText: qs})
+		p.Questions = append(p.Questions, question{Id: strconv.Itoa(i), MatchString: n[0], EnglishText: qs, TranslatedText: qs})
 	}
 
 	paperCollection, ctx := db.GetCollection("paper")
@@ -87,7 +87,10 @@ func PostTranslation(c *gin.Context) {
 	err = paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
 	utils.CheckError(err, true)
 
-	p.Questions[q.Id].TranslatedText = q.TranslatedText
+	questionId, err := strconv.ParseInt(q.Id, 10, 8)
+	utils.CheckError(err, true)
+	
+	p.Questions[questionId].TranslatedText = q.TranslatedText
 	_, err = paperCollection.UpdateOne(ctx, bson.M{}, bson.M{"$set": bson.M{"questions": p.Questions}})
 	utils.CheckError(err, true)
 
