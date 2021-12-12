@@ -21,5 +21,5 @@ func InitMongo() (*mongo.Client, context.Context) {
 }
 
 func GetCollection(collectionName string) (*mongo.Collection, context.Context) {
-	return client.Database("APhOrum").Collection("messages"), ctx
+	return client.Database("APhOrum").Collection(collectionName), ctx
 }
