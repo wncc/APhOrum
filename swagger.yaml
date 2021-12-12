@@ -16,9 +16,149 @@ tags:
   description: "Question paper related Info"
 - name: "fileio"
   description: "Upload and download files"
+- name: "poll"
+  description: "Polling and voting"
+- name: "feedback"
+  description: "Submit feedback on questions"
+  
 schemes:
 - "http"
 paths:
+  /feedback:
+    post:
+      tags:
+      - "feedback"
+      summary: "Submit feedback"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: formData
+          name: questionId
+          type: string
+          required: true
+        - in: formData
+          name: text
+          type: string
+          required: true
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+    get:
+      tags:
+      - "feedback"
+      summary: "Get all feedback"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /feedback/{feedbackId}/{status}:
+    post:
+      tags:
+      - "feedback"
+      summary: "Update feedback status"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: path
+          name: feedbackId
+          type: string
+          required: true
+        - in: path
+          name: status
+          type: string
+          required: true
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /poll:
+    post:
+      tags:
+      - "poll"
+      summary: "Create a poll"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: formData
+          name: question
+          type: string
+          required: true
+        - in: formData
+          name: options
+          type: array
+          items:
+            type: string
+          required: true
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+    get:
+      tags:
+      - "poll"
+      summary: "Get active poll"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /poll/vote:
+    post:
+      tags:
+      - "poll"
+      summary: "Vote for an option"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: formData
+          name: pollId
+          type: string
+          required: true
+          description: Which poll are you voting for?
+        - in: formData
+          name: option
+          type: integer 
+          required: true
+          description: Which option are you voting for?
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /poll/vote/{pollId}:
+    get:
+      tags:
+      - "poll"
+      summary: "Get vote count"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: path
+          name: pollId
+          type: string
+          required: true
+          description: Which poll are you voting for?
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
   /file/upload:
     post:
       tags:
