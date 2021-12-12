@@ -16,15 +16,16 @@ import (
 )
 
 type question struct {
-	Id             int8
+	Id             string	`bson:"_id"`
 	MatchString    string
 	EnglishText    string
 	TranslatedText string
 }
 
 type paper struct {
-	Stub      string
-	Questions []question
+	Id			string		`bson:"_id"`
+	Stub      	string
+	Questions 	[]question
 }
 
 func CreateStore(c *gin.Context) {

@@ -14,7 +14,7 @@ type poll struct {
 	Title   string
 	Options []string
 	Status  string
-	Id      string
+	Id      string	`bson:"_id"`
 }
 
 func GetActivePoll(c *gin.Context) {
