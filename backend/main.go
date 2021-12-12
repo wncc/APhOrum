@@ -6,6 +6,7 @@ import (
 	"backend/db"
 	"backend/files"
 	"backend/paper"
+	"backend/poll"
 
 	"github.com/gin-gonic/gin"
 )
@@ -55,6 +56,12 @@ func main() {
 	// Files
 	router.POST("/file/upload", files.UploadFile)
 	router.POST("/file/download", files.DownloadFile)
+
+	// Polls
+	router.POST("/poll", poll.CreatePoll)
+	router.GET("/poll", poll.GetActivePoll)
+	router.POST("/poll/vote", poll.Vote)
+	router.GET("/poll/vote/:pollId", poll.GetVoteCount)
 
 	router.Run(":8080")
 }
