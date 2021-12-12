@@ -3,6 +3,7 @@ package main
 import (
 	"backend/auth"
 	"backend/bulletin"
+	"backend/db"
 	"backend/files"
 	"backend/paper"
 
@@ -28,6 +29,9 @@ func cors() gin.HandlerFunc {
 func main() {
 	router := gin.Default()
 	router.Use(cors())
+
+	client, ctx := db.InitMongo()
+	defer client.Disconnect(ctx)
 
 	// Auth
 	router.GET("/auth/init", auth.CreateStore)

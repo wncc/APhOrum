@@ -1,16 +1,14 @@
 package auth
 
 import (
+	"backend/db"
 	"backend/utils"
-	"context"
 	"crypto/md5"
 	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type changePasswordData struct {
@@ -23,16 +21,7 @@ func Login(c *gin.Context) {
 	err := c.BindJSON(&authData)
 	utils.CheckError(err, true)
 
-	// Get data from Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	usersCollection := client.Database("APhOrum").Collection("users")
+	usersCollection, ctx := db.GetCollection("users")
 	authData.Password = fmt.Sprintf("%x", md5.Sum([]byte(authData.Password)))
 
 	filter := bson.M{"username": authData.Username, "password": authData.Password}
@@ -51,18 +40,9 @@ func Login(c *gin.Context) {
 func ResetPassword(c *gin.Context) {
 	token, _ := c.Cookie("token")
 
-	// Get data from Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	usersCollection := client.Database("APhOrum").Collection("users")
+	usersCollection, ctx := db.GetCollection("users")
 	defaultPassword := fmt.Sprintf("%x", md5.Sum([]byte("default")))
-	_, err = usersCollection.UpdateOne(ctx, bson.M{"token": token}, bson.M{"$set": bson.M{"password": defaultPassword}})
+	_, err := usersCollection.UpdateOne(ctx, bson.M{"token": token}, bson.M{"$set": bson.M{"password": defaultPassword}})
 	utils.CheckError(err, true)
 
 	c.JSON(200, "OK")
@@ -76,16 +56,7 @@ func ChangePassword(c *gin.Context) {
 	err := c.BindJSON(&d)
 	utils.CheckError(err, true)
 
-	// Get data from Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	usersCollection := client.Database("APhOrum").Collection("users")
+	usersCollection, ctx := db.GetCollection("users")
 	oldPassword := fmt.Sprintf("%x", md5.Sum([]byte(d.OldPassword)))
 	newPassword := fmt.Sprintf("%x", md5.Sum([]byte(d.NewPassword)))
 
@@ -112,17 +83,7 @@ func Logout(c *gin.Context) {
 func VerifyToken(c *gin.Context) {
 	token, _ := c.Cookie("token")
 
-	// Get data from Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	usersCollection := client.Database("APhOrum").Collection("users")
-
+	usersCollection, ctx := db.GetCollection("users")
 	count, _ := usersCollection.CountDocuments(ctx, bson.M{"token": token})
 	if count == 1 {
 		c.JSON(200, "OK")

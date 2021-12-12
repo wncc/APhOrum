@@ -1,14 +1,12 @@
 package auth
 
 import (
+	"backend/db"
 	"backend/utils"
-	"context"
 	"encoding/csv"
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type userAuthData struct {
@@ -31,16 +29,7 @@ func CreateStore(c *gin.Context) {
 		authData = append(authData, userAuthData{Username: entry[0], Password: entry[1]})
 	}
 
-	// Write to Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	usersCollection := client.Database("APhOrum").Collection("users")
+	usersCollection, ctx := db.GetCollection("users")
 	err = usersCollection.Drop(ctx)
 	utils.CheckError(err, true)
 	_, err = usersCollection.InsertMany(ctx, authData)

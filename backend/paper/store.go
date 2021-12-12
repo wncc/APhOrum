@@ -1,8 +1,8 @@
 package paper
 
 import (
+	"backend/db"
 	"backend/utils"
-	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -13,8 +13,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rwestlund/gotex"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type question struct {
@@ -49,17 +47,7 @@ func CreateStore(c *gin.Context) {
 		p.Questions = append(p.Questions, question{Id: int8(i), MatchString: n[0], EnglishText: qs, TranslatedText: qs})
 	}
 
-	// Write to Mongo
-	var client *mongo.Client
-	client, err = mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	paperCollection := client.Database("APhOrum").Collection("paper")
+	paperCollection, ctx := db.GetCollection("paper")
 	err = paperCollection.Drop(ctx)
 	utils.CheckError(err, true)
 	_, err = paperCollection.InsertOne(ctx, p)
@@ -69,18 +57,9 @@ func CreateStore(c *gin.Context) {
 }
 
 func GetSummaryInfo(c *gin.Context) {
-	// Read from Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	paperCollection := client.Database("APhOrum").Collection("paper")
+	paperCollection, ctx := db.GetCollection("paper")
 	var p paper
-	err = paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
+	err := paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
 	utils.CheckError(err, true)
 
 	c.JSON(200, len(p.Questions))
@@ -89,18 +68,9 @@ func GetSummaryInfo(c *gin.Context) {
 func GetTranslation(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 8)
 
-	// Read from Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	paperCollection := client.Database("APhOrum").Collection("paper")
+	paperCollection, ctx := db.GetCollection("paper")
 	var p paper
-	err = paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
+	err := paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
 	utils.CheckError(err, true)
 
 	c.JSON(200, p.Questions[id])
@@ -111,16 +81,7 @@ func PostTranslation(c *gin.Context) {
 	err := c.BindJSON(&q)
 	utils.CheckError(err, true)
 
-	// Write to Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	paperCollection := client.Database("APhOrum").Collection("paper")
+	paperCollection, ctx := db.GetCollection("paper")
 	var p paper
 	err = paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
 	utils.CheckError(err, true)
@@ -133,18 +94,9 @@ func PostTranslation(c *gin.Context) {
 }
 
 func DownloadTranslation(c *gin.Context) {
-	// Read from Mongo
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	utils.CheckError(err, true)
-
-	ctx := context.Background()
-	err = client.Connect(ctx)
-	utils.CheckError(err, true)
-	defer client.Disconnect(ctx)
-
-	paperCollection := client.Database("APhOrum").Collection("paper")
+	paperCollection, ctx := db.GetCollection("paper")
 	var p paper
-	err = paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
+	err := paperCollection.FindOne(ctx, bson.M{}).Decode(&p)
 	utils.CheckError(err, true)
 
 	s := p.Stub
