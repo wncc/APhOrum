@@ -4,6 +4,7 @@ import (
 	"backend/auth"
 	"backend/bulletin"
 	"backend/db"
+	"backend/feedback"
 	"backend/files"
 	"backend/paper"
 	"backend/poll"
@@ -62,6 +63,11 @@ func main() {
 	router.GET("/poll", poll.GetActivePoll)
 	router.POST("/poll/vote", poll.Vote)
 	router.GET("/poll/vote/:pollId", poll.GetVoteCount)
+
+	// Feedback
+	router.POST("/feedback", feedback.SubmitFeedback)
+	router.GET("/feedback", feedback.GetFeedback)
+	router.POST("/feedback/:feedbackId/:status", feedback.UpdateFeedbackStatus)
 
 	router.Run(":8080")
 }
