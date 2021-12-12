@@ -14,9 +14,54 @@ tags:
   description: "Bulletin Board"
 - name: "paper"
   description: "Question paper related Info"
+- name: "fileio"
+  description: "Upload and download files"
 schemes:
 - "http"
 paths:
+  /file/upload:
+    post:
+      tags:
+      - "fileio"
+      summary: "Upload a file"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: formData
+          name: fileObject
+          type: file
+          required: true
+          description: The file to upload.
+        - in: formData
+          name: fileDescription
+          type: string
+          required: true
+          description: What is the file about?
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /file/download:
+    post:
+      tags:
+      - "fileio"
+      summary: "Download a file"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: formData
+          name: fileDescription
+          type: string
+          required: true
+          description: What is the file about?
+      produces:
+      - "application/octet-stream"
+      responses:
+        "405":
+          description: "Invalid input"
   /paper/init:
     get:
       tags:
@@ -181,6 +226,35 @@ paths:
           description: "OK"
         "401":
           description: "Access denied"
+  /auth/resetPassword:
+    get:
+      tags:
+      - "auth"
+      summary: "Reset Password"
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Access denied"
+  /auth/changePassword:
+    post:
+      tags:
+      - "auth"
+      summary: "Change Password"
+      description: ""
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Old and new password"
+        required: true
+        schema:
+          $ref: "#/definitions/PasswordChange"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Access denied"
   /auth/logout:
     get:
       tags:
@@ -201,6 +275,20 @@ definitions:
         type: "string"
         example: "doggie"
       password:
+        type: "string"
+        format: "password"
+        example: "abcdefg"
+  PasswordChange:
+    type: "object"
+    required:
+    - "oldPassword"
+    - "newPassword"
+    properties:
+      oldPassword:
+        type: "string"
+        format: "password"
+        example: "doggie"
+      newPassword:
         type: "string"
         format: "password"
         example: "abcdefg"

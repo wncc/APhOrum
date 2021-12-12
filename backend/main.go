@@ -3,6 +3,7 @@ package main
 import (
 	"backend/auth"
 	"backend/bulletin"
+	"backend/files"
 	"backend/paper"
 
 	"github.com/gin-gonic/gin"
@@ -46,6 +47,10 @@ func main() {
 	router.GET("/paper/translate/:id", paper.GetTranslation)
 	router.POST("/paper/translate", paper.PostTranslation)
 	router.GET("/paper/translate/download", paper.DownloadTranslation)
+
+	// Files
+	router.POST("/file/upload", files.UploadFile)
+	router.POST("/file/download", files.DownloadFile)
 
 	router.Run(":8080")
 }
