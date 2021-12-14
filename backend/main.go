@@ -14,7 +14,7 @@ import (
 
 func cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "https://editor.swagger.io")
+		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 		c.Header("Access-Control-Allow-Methods", "POST,GET,OPTIONS")
@@ -36,7 +36,7 @@ func main() {
 	defer client.Disconnect(ctx)
 
 	// Front End
-	router.Static("/ui", "../frontend/static")
+	router.Static("/ui", "../frontend/dist")
 
 	// Auth
 	router.GET("/auth/init", auth.CreateStore)

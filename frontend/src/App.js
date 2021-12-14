@@ -1,15 +1,19 @@
 'use strict';
 
-const {
-  Tabs,
-  Tab,
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  TextField,
-  Button
-} = MaterialUI;
+import React, { Component } from 'react'
+
+import PropTypes from 'prop-types'
+
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+
+import config from './config.json'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -37,13 +41,6 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
 class Bulletin extends React.Component {
   constructor(props) {
     super(props);
@@ -53,7 +50,7 @@ class Bulletin extends React.Component {
   updateMessage() {
     let messages = [];
 
-    fetch('/bulletin', {
+    fetch(config.BACKEND_URL + '/bulletin', {
       method: 'GET'
     }).then(response => {
       if (response.ok) return response.json()
@@ -73,7 +70,7 @@ class Bulletin extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    fetch('/bulletin', {
+    fetch(config.BACKEND_URL + '/bulletin', {
       method: 'POST',
       body: JSON.stringify({ 'message': this.state.m, 'expiry': Math.floor((new Date()).getTime() / 1e3) + 30 }),
       headers: {
@@ -115,7 +112,7 @@ class Bulletin extends React.Component {
   };
 }
 
-class Navigator extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = { value: 0 };
@@ -130,12 +127,12 @@ class Navigator extends React.Component {
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={this.state.value} onChange={this.handleChange}>
-            <Tab label="Bulletin" {...a11yProps(0)} />
-            <Tab label="Files" {...a11yProps(1)} />
-            <Tab label="Feedback" {...a11yProps(2)} />
-            <Tab label="Polls" {...a11yProps(3)} />
-            <Tab label="Translation" {...a11yProps(4)} />
-            <Tab label="Marking" {...a11yProps(5)} />
+            <Tab label="Bulletin" />
+            <Tab label="Files" />
+            <Tab label="Feedback" />
+            <Tab label="Polls" />
+            <Tab label="Translation" />
+            <Tab label="Marking" />
           </Tabs>
         </Box>
         <TabPanel value={this.state.value} index={0}>
@@ -161,4 +158,4 @@ class Navigator extends React.Component {
   }
 }
 
-export { Navigator }
+export default App

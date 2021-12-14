@@ -1,16 +1,27 @@
 {
-  "name": "frontend",
+  "name": "aphorum-frontend",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "Frontend for APhOrum",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "nwb build-react-app",
+    "clean": "nwb clean-app",
+    "start": "nwb serve-react-app",
+    "test": "nwb test-react",
+    "test:coverage": "nwb test-react --coverage",
+    "test:watch": "nwb test-react --server"
   },
-  "keywords": [],
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "nwb": "0.25.x"
+  },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-react-app": "^3.1.2"
-  }
+  "repository": "https://github.com/wncc/APhOrum"
 }
