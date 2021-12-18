@@ -23,7 +23,7 @@ class Feedback extends Component {
     this.state = { nQuestions: 0, qId: 0, qIdDisplay: 0, fbText: '', feedback: [] };
   }
 
-  deleteFeedback = (event, id) => {
+  deleteFeedback = (_, id) => {
     fetch(config.BACKEND_URL + '/feedback/' + id.toString() + "/inactive", {
       method: 'POST'
     }).then(response => {

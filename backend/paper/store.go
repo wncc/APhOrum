@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rwestlund/gotex"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type question struct {
@@ -26,6 +27,11 @@ type paper struct {
 	Id        string `bson:"_id"`
 	Stub      string
 	Questions []question
+}
+
+type marks struct {
+	MarksData      string
+	AnnotationData string
 }
 
 func CreateStore(c *gin.Context) {
@@ -118,4 +124,25 @@ func DownloadTranslation(c *gin.Context) {
 	utils.CheckError(err, true)
 
 	c.File("../data/paper.pdf")
+}
+
+func PostMarks(c *gin.Context) {
+	m := marks{MarksData: c.PostForm("marksData"), AnnotationData: c.PostForm("annotationData")}
+
+	marksCollection, ctx := db.GetCollection("marks")
+	opts := options.Update().SetUpsert(true)
+	_, err := marksCollection.UpdateOne(ctx, bson.M{},
+		bson.M{"$set": m}, opts)
+	utils.CheckError(err, true)
+
+	c.JSON(200, "OK")
+}
+
+func GetMarks(c *gin.Context) {
+	marksCollection, ctx := db.GetCollection("marks")
+	var m marks
+	err := marksCollection.FindOne(ctx, bson.M{}).Decode(&m)
+	utils.CheckError(err, true)
+
+	c.JSON(200, m)
 }

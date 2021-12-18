@@ -53,6 +53,8 @@ func main() {
 	// Paper
 	router.GET("/paper/init", paper.CreateStore)
 	router.GET("/paper/summaryInfo", paper.GetSummaryInfo)
+	router.GET("/paper/marks", paper.GetMarks)
+	router.POST("/paper/marks", paper.PostMarks)
 	router.GET("/paper/translate/:id", paper.GetTranslation)
 	router.POST("/paper/translate", paper.PostTranslation)
 	router.GET("/paper/translate/download", paper.DownloadTranslation)
