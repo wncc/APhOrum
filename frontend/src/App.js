@@ -11,6 +11,7 @@ import Tabs from '@mui/material/Tabs'
 import Bulletin from './Bulletin.js'
 import FileIO from './Files.js'
 import Translation from './Translation.js'
+import Feedback from './Feedback.js'
 
 function TabPanel(props) {
   const { children, hidden, ...other } = props;
@@ -33,7 +34,8 @@ class App extends Component {
     this.components = [
       ['Bulletin', Bulletin],
       ['Files', FileIO],
-      ['Translation', Translation]
+      ['Translation', Translation],
+      ['Feedback', Feedback],
     ];
     this.state = { value: 'Bulletin' };
   }

@@ -17,7 +17,7 @@ type feedback struct {
 
 func GetFeedback(c *gin.Context) {
 	feedbackCollection, ctx := db.GetCollection("feedback")
-	cursor, err := feedbackCollection.Find(ctx, bson.M{})
+	cursor, err := feedbackCollection.Find(ctx, bson.M{"status": "active"})
 	utils.CheckError(err, true)
 
 	var result []feedback
@@ -31,7 +31,7 @@ func SubmitFeedback(c *gin.Context) {
 	questionId := c.PostForm("questionId")
 	text := c.PostForm("text")
 
-	feedback := feedback{QuestionId: questionId, Text: text, Status: "inactive", Id: utils.GenerateId()}
+	feedback := feedback{QuestionId: questionId, Text: text, Status: "active", Id: utils.GenerateId()}
 
 	feedbackCollection, ctx := db.GetCollection("feedback")
 	_, err := feedbackCollection.InsertOne(ctx, feedback)
