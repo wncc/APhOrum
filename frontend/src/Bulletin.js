@@ -53,7 +53,7 @@ class Bulletin extends Component {
       }
     }).then(response => {
       if (response.ok) return response.json()
-    }).then(json => {
+    }).then(() => {
       this.setState({ m: '' })
       this.updateMessage();
     }).catch(err => {
@@ -74,7 +74,7 @@ class Bulletin extends Component {
               label="What is the message?"
               variant="outlined"
             />
-            <Box sx={{ pt: 2 }}><Button variant="contained" type="submit">Submit</Button></Box>
+            <Box sx={{ mt: 2 }}><Button variant="contained" type="submit">Submit</Button></Box>
           </Box>
         </Grid>
         <Grid item xs={8}>

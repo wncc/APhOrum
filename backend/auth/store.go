@@ -17,7 +17,7 @@ type userAuthData struct {
 
 func CreateStore(c *gin.Context) {
 	// Load user info
-	f, err := os.Open("../init_data/users.csv")
+	f, err := os.Open("../data/users.csv")
 	utils.CheckError(err, true)
 
 	csvReader := csv.NewReader(f)

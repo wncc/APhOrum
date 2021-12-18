@@ -23,6 +23,6 @@
 
 ## General ##
 frontend/dist*
-init_data*
+data*
 *.log
 .idea

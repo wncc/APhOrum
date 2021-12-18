@@ -16,23 +16,23 @@ import (
 )
 
 type question struct {
-	Id             string	`bson:"_id"`
+	Id             string `bson:"_id"`
 	MatchString    string
 	EnglishText    string
 	TranslatedText string
 }
 
 type paper struct {
-	Id			string		`bson:"_id"`
-	Stub      	string
-	Questions 	[]question
+	Id        string `bson:"_id"`
+	Stub      string
+	Questions []question
 }
 
 func CreateStore(c *gin.Context) {
 	// Read from files
 	var p paper
 
-	b, err := ioutil.ReadFile("../init_data/paper.texstub")
+	b, err := ioutil.ReadFile("../data/paper.texstub")
 	utils.CheckError(err, true)
 	s := string(b)
 	p.Stub = s
@@ -42,7 +42,7 @@ func CreateStore(c *gin.Context) {
 
 	var qs string
 	for i, n := range matches {
-		b, err = ioutil.ReadFile(fmt.Sprintf("../init_data/%s.texstub", n[1]))
+		b, err = ioutil.ReadFile(fmt.Sprintf("../data/%s.texstub", n[1]))
 		utils.CheckError(err, true)
 		qs = string(b)
 		p.Questions = append(p.Questions, question{Id: strconv.Itoa(i), MatchString: n[0], EnglishText: qs, TranslatedText: qs})
@@ -89,7 +89,7 @@ func PostTranslation(c *gin.Context) {
 
 	questionId, err := strconv.ParseInt(q.Id, 10, 8)
 	utils.CheckError(err, true)
-	
+
 	p.Questions[questionId].TranslatedText = q.TranslatedText
 	_, err = paperCollection.UpdateOne(ctx, bson.M{}, bson.M{"$set": bson.M{"questions": p.Questions}})
 	utils.CheckError(err, true)
@@ -114,8 +114,8 @@ func DownloadTranslation(c *gin.Context) {
 	})
 	utils.CheckError(err, true)
 
-	err = os.WriteFile("../init_data/paper.pdf", []byte(pdf), 0644)
+	err = os.WriteFile("../data/paper.pdf", []byte(pdf), 0644)
 	utils.CheckError(err, true)
 
-	c.File("../init_data/paper.pdf")
+	c.File("../data/paper.pdf")
 }

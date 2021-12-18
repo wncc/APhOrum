@@ -60,6 +60,7 @@ func main() {
 	// Files
 	router.POST("/file/upload", files.UploadFile)
 	router.POST("/file/download", files.DownloadFile)
+	router.GET("/file/list", files.ListFiles)
 
 	// Polls
 	router.POST("/poll", poll.CreatePoll)

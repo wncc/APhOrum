@@ -159,6 +159,17 @@ paths:
       responses:
         "405":
           description: "Invalid input"
+  /file/list:
+    get:
+      tags:
+      - "fileio"
+      summary: "List files"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
   /file/upload:
     post:
       tags:
