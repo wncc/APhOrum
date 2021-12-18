@@ -13,6 +13,7 @@ import FileIO from './Files.js'
 import Translation from './Translation.js'
 import Feedback from './Feedback.js'
 import Marking from './Marking.js'
+import Poll from './Poll.js'
 
 function TabPanel(props) {
   const { children, hidden, ...other } = props;
@@ -37,7 +38,8 @@ class App extends Component {
       ['Files', FileIO],
       ['Translation', Translation],
       ['Feedback', Feedback],
-      ['Marking', Marking]
+      ['Marking', Marking],
+      ['Poll', Poll]
     ];
     this.state = { value: 'Bulletin' };
   }

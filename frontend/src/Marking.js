@@ -6,8 +6,8 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
-import Pagination from '@mui/material/Pagination'
 import Grid from '@mui/material/Grid'
+import Pagination from '@mui/material/Pagination'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
@@ -18,10 +18,9 @@ import config from './config.json'
 class Marking extends Component {
   constructor(props) {
     super(props);
-    this.state = { n: 3, i: 1 };
+    this.state = { n: 3, i: 1, marksData: [] };
     this.state.annotationData = Array(this.state.n).fill(1).map((_, i) =>
       require("../../data/img" + (i + 1).toString() + ".jpg").default);
-    this.state.marksData = Array(this.state.n).fill(0);
   }
 
   showMarkerArea = (event, i) => {
@@ -55,6 +54,16 @@ class Marking extends Component {
   }
 
   componentDidMount() {
+    fetch(config.BACKEND_URL + '/paper/summaryInfo', {
+      method: 'GET'
+    }).then(response => {
+      if (response.ok) return response.json()
+    }).then(json => {
+      this.setState({ marksData: Array(parseInt(json)).fill(0) })
+    }).catch(err => {
+      console.log('Error:', err);
+    })
+
     fetch(config.BACKEND_URL + '/paper/marks', {
       method: 'GET'
     }).then(response => {
@@ -102,12 +111,12 @@ class Marking extends Component {
         </Grid>
         <Grid item xs={4}>
           <Typography variant="h4" sx={{ mb: 2 }}>Marks Entry</Typography>
-          {Array(this.state.n).fill(1).map((_, i) => {
+          {this.state.marksData.map((marks, i) => {
             return (
               <Box sx={{ my: 2 }}>
                 <TextField
                   onChange={(e) => this.changeMarks(e, i)}
-                  value={this.state.marksData[i]}
+                  value={marks}
                   label={"Question " + (i + 1).toString()}
                   variant="outlined"
                 />

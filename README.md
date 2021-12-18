@@ -10,7 +10,8 @@
 `cd frontend && npm install`
 
 ## Others
-The latex engine assumes `xelatex` binary is available in your `$PATH`
+- The latex engine assumes `xelatex` binary is available in your `$PATH`
+- A mongo server is running on port 27017
 
 ## Running locally
 

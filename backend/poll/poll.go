@@ -14,7 +14,7 @@ type poll struct {
 	Title   string
 	Options []string
 	Status  string
-	Id      string	`bson:"_id"`
+	Id      string `bson:"_id"`
 }
 
 func GetActivePoll(c *gin.Context) {
@@ -30,8 +30,9 @@ func GetActivePoll(c *gin.Context) {
 func CreatePoll(c *gin.Context) {
 	question := c.PostForm("question")
 	options := strings.Split(c.PostForm("options"), ",")
+	pollId := c.PostForm("pollId")
 
-	poll := poll{Title: question, Options: options, Status: "inactive", Id: "abc"}
+	poll := poll{Title: question, Options: options, Status: "active", Id: pollId}
 
 	msgCollection, ctx := db.GetCollection("polls")
 	_, err := msgCollection.InsertOne(ctx, poll)
@@ -47,6 +48,16 @@ func Vote(c *gin.Context) {
 
 	voteCollection, ctx := db.GetCollection("votes")
 	_, err = voteCollection.InsertOne(ctx, bson.M{"pollId": pollId, "option": option})
+	utils.CheckError(err, true)
+
+	c.JSON(200, "OK")
+}
+
+func ClosePoll(c *gin.Context) {
+	pollCollection, ctx := db.GetCollection("polls")
+	filter := bson.M{"_id": c.Param("pollId")}
+
+	_, err := pollCollection.UpdateOne(ctx, filter, bson.M{"$set": bson.M{"status": "inactive"}})
 	utils.CheckError(err, true)
 
 	c.JSON(200, "OK")
@@ -69,6 +80,6 @@ func GetVoteCount(c *gin.Context) {
 }
 
 type voteCount struct {
-	Option	int `bson:"_id"`
-	Count	int
+	Option int `bson:"_id"`
+	Count  int
 }

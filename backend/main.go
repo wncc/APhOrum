@@ -69,6 +69,7 @@ func main() {
 	router.GET("/poll", poll.GetActivePoll)
 	router.POST("/poll/vote", poll.Vote)
 	router.GET("/poll/vote/:pollId", poll.GetVoteCount)
+	router.GET("/poll/close/:pollId", poll.ClosePoll)
 
 	// Feedback
 	router.POST("/feedback", feedback.SubmitFeedback)

@@ -90,6 +90,10 @@ paths:
       - "multipart/form-data"
       parameters:
         - in: formData
+          name: pollId
+          type: string
+          required: true
+        - in: formData
           name: question
           type: string
           required: true
@@ -145,6 +149,25 @@ paths:
       tags:
       - "poll"
       summary: "Get vote count"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: path
+          name: pollId
+          type: string
+          required: true
+          description: Which poll are you voting for?
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /poll/close/{pollId}:
+    get:
+      tags:
+      - "poll"
+      summary: "Close vote"
       description: ""
       consumes:
       - "multipart/form-data"
@@ -236,6 +259,40 @@ paths:
       operationId: "getSummaryInfo"
       consumes:
       - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+  /paper/marks:
+    post:
+      tags:
+      - "paper"
+      summary: "Post marks"
+      description: ""
+      consumes:
+      - "multipart/form-data"
+      parameters:
+        - in: formData
+          name: marksData
+          type: string
+          required: true
+          description: JSON marks map
+        - in: formData
+          name: annotationData
+          type: string
+          required: true
+          description: JSON annotation
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid input"
+    get:
+      tags:
+      - "paper"
+      summary: "Get marks"
+      description: ""
       produces:
       - "application/json"
       responses:
