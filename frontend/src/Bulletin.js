@@ -65,12 +65,13 @@ class Bulletin extends Component {
     return (
       <Grid container spacing={2}>
         <Grid item xs={4}>
+          <Typography variant="h4" sx={{ mb: 2 }}>Send a new message</Typography>
           <Box component="form" novalidate autoComplete="off" onSubmit={this.handleSubmit}>
-            <Typography variant="h4" sx={{ mb: 2 }}>Send a new message</Typography>
             <TextField
               multiline
               fullWidth
-              onChange={(event) => this.setState({ m: event.target.value })} value={this.state.m}
+              onChange={(event) => this.setState({ m: event.target.value })}
+              value={this.state.m}
               label="What is the message?"
               variant="outlined"
             />

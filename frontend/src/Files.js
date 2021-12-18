@@ -77,8 +77,8 @@ class FileIO extends Component {
     return (
       <Grid container spacing={2}>
         <Grid item xs={6}>
+          <Typography variant="h4" sx={{ mb: 2 }}>Upload a File</Typography>
           <Box component="form" novalidate autoComplete="off" onSubmit={this.handleSubmit}>
-            <Typography variant="h4" sx={{ mb: 2 }}>Upload a File</Typography>
             <input
               type="file"
               accept=".pdf"
