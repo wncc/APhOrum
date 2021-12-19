@@ -1,0 +1,50 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+%\usepackage{fullpage}
+\usepackage{marvosym}
+\usepackage{foekfont}
+\usepackage{yfonts}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{siunitx}
+%opening
+\title{\large \textbf{18th Indian National Astronomy Olympiad \\ Orientation cum Selection Camp(Sr)}\vspace{-7ex}}
+\date{}
+\author{}
+\begin{document}
+\maketitle
+{\fontfamily{qzc}\selectfont\large
+\begin{center}
+  \begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} l}
+    \textbf{Theory Test 1}  & \textbf{Date} : \date{10th May, 2016} \\
+    \textbf{Time} : $9$:$00$ - $10$:$30$ \Smiley{} & \textbf{Maximum! Marks} : $60$ \\ 
+  \end{tabular*}
+\end{center}
+\vspace{-3.5ex}
+\begin{flushright}
+\hrule
+\vspace{1.0ex}
+  You've probably dreamt of a perfectly wonderful test, but this is not it!
+\hrule
+%\vspace{-1.0ex}
+\end{flushright}
+}
+
+Once upon a time in a far far away galaxy, there were born the civilisation of \emph{Ortsa}. And they lived happily ever after...
+\\...until a few years back, the dark lord \emph{Shrapnel} shredded away their home planet. It was a deadly massacre, yes it was! But it was not the end. Some survived and one amongst them was \emph{Taher, the Shah}. He shall recover in \emph{silence} and return to claim his homeland. 
+ 
+\section{\foek{Masterchef} \hfill \small{15 Marks}}
+<<APhOrum_q1>>
+
+\section{\foek{Motorbike Madness} \hfill \small{20 Marks}}
+<<APhOrum_q2>>
+
+\section{\foek{ I Lava You \hfill}  \small{25 Marks}}
+<<APhOrum_q3>>
+
+\vspace{1ex}
+\hrule
+\vspace{1ex}
+
+\end{document}

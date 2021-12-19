@@ -1,0 +1,5 @@
+Due to a strange aura left after the war, there is no heat transfer by conduction. Dr. \emph{Pavan} has come up with a novel cubical container made of three layers. The outer layer absorbs and emits only in UV while the inner layer absorbs and emits only in Infrared, both connected by the secret material \emph{Drake}. He fills it with a litre of water at $25^{\circ}$ C. How much time does it take the water to boil if kept in a furnace at 6000 K? 
+\\You have the following information about Drake:
+\\Absorption Band for Outer Layer: $\lambda = \SI{3000}{\angstrom}$, $\Delta \lambda = \SI{500}{\angstrom}$ 
+\\Absorption Band for Inner Layer: $\lambda = \SI{8000}{\angstrom}$, $\Delta \lambda = \SI{500}{\angstrom}$ 
+\\ Dimensions of the container: $20 \times10 \times10$ cm

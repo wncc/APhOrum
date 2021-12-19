@@ -23,6 +23,5 @@
 
 ## General ##
 frontend/dist*
-data*
 *.log
 .idea
