@@ -1,6 +1,6 @@
 module.exports = {
   webpack: {
-    publicPath: '/ui'
+    publicPath: ''
   },
   type: 'react-app'
 }
